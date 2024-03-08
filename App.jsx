@@ -1,0 +1,61 @@
+import React, { useState } from 'react';
+import './App.css';
+
+function FlashcardApp() {
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const cardPairs = [
+    { question: 'What is the largest mammal?', answer: 'Blue Whale' },
+    { question: 'What is the fastest land animal?', answer: 'Cheetah' },
+    { question: 'What is the only mammal capable of sustained flight?', answer: 'Bat' },
+    { question: 'What is the fastest bird on land?', answer: 'Ostrich'}
+    // Add more card pairs as needed
+  ];
+
+  const totalCards = cardPairs.length;
+  const currentCard = cardPairs[currentCardIndex];
+
+  const handleShowAnswer = () => {
+    setShowAnswer((prevShowAnswer) => !prevShowAnswer);
+  };
+
+  const handleNextCard = () => {
+    setShowAnswer(false);
+    setCurrentCardIndex(Math.floor(Math.random() * totalCards));
+  };
+
+  const handlePrevCard = () => {
+    setShowAnswer(false);
+    setCurrentCardIndex((prevIndex) => (prevIndex === 0 ? totalCards - 1 : prevIndex - 1));
+  };
+
+  return (
+    <div className="flashcard-container">
+      <div className="content">
+        <h1>Animal Flashcards</h1>
+        <p>Learn interesting facts about different animals!</p>
+        <div className="total-cards">
+          Total Cards: {totalCards}
+        </div>
+        <div className="flashcard" onClick={handleShowAnswer}>
+          {showAnswer ? (
+            <div className="flashcard-answer">
+              {currentCard.answer}
+            </div>
+          ) : (
+            <div className="flashcard-question">
+              {currentCard.question}
+            </div>
+          )}
+        </div>
+        <div className="button-container">
+          <button onClick={handlePrevCard}>Previous Card</button>
+          <button onClick={handleNextCard}>Next Card</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default FlashcardApp;

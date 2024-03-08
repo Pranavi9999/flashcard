@@ -1,0 +1,23 @@
+.flashcard {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+  min-height: 100px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  width: 300px; /* Set a fixed width for the card */
+}
+
+.flashcard:hover {
+  background-color: #f0f0f0;
+}
+
+.flashcard-question,
+.flashcard-answer {
+  font-size: 1.2em; /* Adjust font size as needed */
+}
+
+.flashcard-answer {
+  color: green;
+}
