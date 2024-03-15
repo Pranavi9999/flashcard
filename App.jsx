@@ -4,6 +4,8 @@ import './App.css';
 function FlashcardApp() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [userGuess, setUserGuess] = useState('');
+  const [feedback, setFeedback] = useState('');
 
   const cardPairs = [
     { question: 'What is the largest mammal?', answer: 'Blue Whale' },
@@ -17,17 +19,33 @@ function FlashcardApp() {
   const currentCard = cardPairs[currentCardIndex];
 
   const handleShowAnswer = () => {
-    setShowAnswer((prevShowAnswer) => !prevShowAnswer);
+    setShowAnswer(true);
   };
 
   const handleNextCard = () => {
     setShowAnswer(false);
-    setCurrentCardIndex(Math.floor(Math.random() * totalCards));
+    setCurrentCardIndex((prevIndex) => (prevIndex === totalCards - 1 ? 0 : prevIndex + 1));
+    setUserGuess('');
+    setFeedback('');
   };
 
   const handlePrevCard = () => {
     setShowAnswer(false);
     setCurrentCardIndex((prevIndex) => (prevIndex === 0 ? totalCards - 1 : prevIndex - 1));
+    setUserGuess('');
+    setFeedback('');
+  };
+
+  const handleSubmit = () => {
+    if (userGuess.toLowerCase() === currentCard.answer.toLowerCase()) {
+      setFeedback('Correct!');
+    } else {
+      setFeedback('Incorrect. Try again!');
+    }
+  };
+
+  const handleFlipCard = () => {
+    setShowAnswer((prevState) => !prevState);
   };
 
   return (
@@ -38,7 +56,7 @@ function FlashcardApp() {
         <div className="total-cards">
           Total Cards: {totalCards}
         </div>
-        <div className="flashcard" onClick={handleShowAnswer}>
+        <div className="flashcard" onClick={handleFlipCard}>
           {showAnswer ? (
             <div className="flashcard-answer">
               {currentCard.answer}
@@ -49,6 +67,18 @@ function FlashcardApp() {
             </div>
           )}
         </div>
+        {!showAnswer && (
+          <div>
+            <input 
+              type="text" 
+              placeholder="Enter your guess" 
+              value={userGuess} 
+              onChange={(e) => setUserGuess(e.target.value)} 
+            />
+            <button onClick={handleSubmit}>Submit</button>
+            <div>{feedback}</div>
+          </div>
+        )}
         <div className="button-container">
           <button onClick={handlePrevCard}>Previous Card</button>
           <button onClick={handleNextCard}>Next Card</button>
